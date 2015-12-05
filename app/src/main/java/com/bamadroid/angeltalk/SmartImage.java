@@ -3,9 +3,12 @@ package com.bamadroid.angeltalk;
 import android.graphics.Bitmap;
 
 /**
- * Created by ray on 12/4/2015.
+ * Data Structure That Will be behind the gridView
+ *
  */
 public class SmartImage {
+
+    //TODO: Not sure if i need this ~remove??
     private int mId;
     private String mName;
     private Bitmap mImage;

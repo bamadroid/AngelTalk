@@ -20,8 +20,15 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Toast;
 
+
+/**
+ * Angel Talk is an Application that will allow a special needs
+ * child to communicate using pictures and recorded voices.
+ *
+ */
 public class AngelTalkActivity extends AppCompatActivity {
 
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     private SQLiteDatabase mAngleTalkDatabase;
     private DatabaseHelper mDatabaseHelper;
 
@@ -41,6 +48,8 @@ public class AngelTalkActivity extends AppCompatActivity {
             Toast.makeText(this.getApplicationContext(),"Database Failed!", Toast.LENGTH_LONG);
         }
 
+
+        //TODO: Not used at this time
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +67,7 @@ public class AngelTalkActivity extends AppCompatActivity {
             }
         });
 
+        //TODO: Not used at this time
         Button recordButton = (Button) findViewById(R.id.record_button);
         pictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +76,7 @@ public class AngelTalkActivity extends AppCompatActivity {
             }
         });
 
+        //TODO: Not implemented yet
         GridView gridview = (GridView) findViewById(R.id.gridView);
         //gridview.setAdapter(new ImageAdapter(this, 1));
 
@@ -108,8 +119,12 @@ public class AngelTalkActivity extends AppCompatActivity {
         }
     }
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
 
+
+    /**
+     * Send Intent that allows user to take a picture.
+     * This Intent expects results (onActivityResult())
+     */
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
