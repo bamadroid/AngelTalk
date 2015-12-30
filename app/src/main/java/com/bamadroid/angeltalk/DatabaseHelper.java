@@ -26,6 +26,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_IMAGE = DatabaseConstants.KEY_IMAGE;
     private static final String KEY_SOUND_PATH = DatabaseConstants.KEY_SOUND_PATH;
 
+    public DbBitmapUtility dbBitmapUtility;
+
     // Table create statement
     private static final String CREATE_TABLE_IMAGE = "CREATE TABLE " + DB_TABLE + "("+
             KEY_NAME + " TEXT," +
@@ -34,6 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        dbBitmapUtility = new DbBitmapUtility(48,48);
     }
 
     @Override
@@ -54,8 +57,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void addEntry(SQLiteDatabase db, String aName, Bitmap aImage, String aSoundPath) throws SQLiteException
     {
-        DbBitmapUtility dbBitmapUtility = new DbBitmapUtility();
-
         // compress and convert to Bytes
         byte[] image = dbBitmapUtility.getBytes(aImage);
 
@@ -68,9 +69,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getAllItems(SQLiteDatabase db)
     {
-        return db.query(DB_TABLE, new String[] {
-                        KEY_IMAGE,
+        Cursor cursor = db.query(DB_TABLE, new String[] {
                         KEY_NAME,
+                        KEY_IMAGE,
                         KEY_SOUND_PATH
                 },
                 null,
@@ -78,6 +79,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null,
                 null,
                 null);
+
+        return cursor;
     }
 
 }

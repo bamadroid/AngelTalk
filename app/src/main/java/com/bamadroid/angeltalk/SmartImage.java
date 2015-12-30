@@ -1,51 +1,77 @@
 package com.bamadroid.angeltalk;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
+import android.net.Uri;
+
+import java.io.IOException;
 
 /**
- * Data Structure That Will be behind the gridView
+ * Data that will be behind the gridView
  *
  */
 public class SmartImage {
-
-    //TODO: Not sure if i need this ~remove??
-    private int mId;
     private String mName;
     private Bitmap mImage;
     private String mSoundPath;
 
-
-    public SmartImage(int aId, String aName, Bitmap aImage, String aSoundPath)
+    public static class SmartImageBuilder
     {
-        this.mId = aId;
-        this.mName = aName;
-        this.mImage = aImage;
-        this.mSoundPath = aSoundPath;
+        private String bName;
+        private Bitmap bImage;
+        private String bSoundPath;
+
+        public SmartImageBuilder(Bitmap bitmap)
+        {
+            this.bImage = bitmap;
+        }
+
+        public SmartImageBuilder setSoundPath(String soundPath)
+        {
+            this.bSoundPath = soundPath;
+            return this;
+        }
+
+        public SmartImageBuilder setName(String  name)
+        {
+            this.bName = name;
+            return this;
+        }
+
+        public SmartImage build()
+        {
+            return new SmartImage(this);
+        }
     }
 
-    public SmartImage(){}
+    public SmartImage(SmartImageBuilder builder)
+    {
+        this.mName = builder.bName;
+        this.mImage = builder.bImage;
+        this.mSoundPath = builder.bSoundPath;
+    }
 
-    public String getName() {
+    public String getName()
+    {
         return mName;
     }
 
-    public void setName(String mName) {
-        this.mName = mName;
-    }
-
-    public Bitmap getImage() {
-        return mImage;
-    }
-
-    public void setImage(Bitmap mImage) {
-        this.mImage = mImage;
-    }
-
-    public String getSoundPath() {
+    public String getSoundPath()
+    {
         return mSoundPath;
     }
 
-    public void setSoundPath(String mSoundPath) {
-        this.mSoundPath = mSoundPath;
+    public Bitmap getImage()
+    {
+        return mImage;
+    }
+
+    public void playSound(Context context)
+    {
+        // play sound
+        MediaPlayer mediaPlayer = new MediaPlayer();
+        mediaPlayer.create(context, Uri.parse(mSoundPath));
+        mediaPlayer.start();
     }
 }

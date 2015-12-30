@@ -2,9 +2,11 @@ package com.bamadroid.angeltalk;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +20,7 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 
@@ -69,10 +72,21 @@ public class AngelTalkActivity extends AppCompatActivity {
 
         //TODO: Not used at this time
         Button recordButton = (Button) findViewById(R.id.record_button);
-        pictureButton.setOnClickListener(new View.OnClickListener() {
+        recordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //dispatchRecordIntent();
+                Cursor cursor = mDatabaseHelper.getAllItems(mAngleTalkDatabase);
+                if (cursor != null) {
+                    byte[] bytes = cursor.getBlob(1/*cursor.getColumnIndex(DatabaseConstants.KEY_IMAGE)*/);
+                    Bitmap bitmap = null;
+                    bitmap = mDatabaseHelper.dbBitmapUtility.getImage(bytes);
+
+                    ImageButton imageButton = (ImageButton) findViewById(R.id.picture_button2);
+                    BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
+                    imageButton.setBackgroundDrawable(bitmapDrawable);
+                }
+
             }
         });
 
@@ -115,8 +129,36 @@ public class AngelTalkActivity extends AppCompatActivity {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
 
-            mDatabaseHelper.addEntry(mAngleTalkDatabase, "Test_1", imageBitmap, "This is a path");
+            // Build Smart Image to Store
+            SmartImage smartImage = buildSmartImage(imageBitmap);
+            mDatabaseHelper.addEntry(mAngleTalkDatabase, smartImage.getName(), smartImage.getImage(), smartImage.getSoundPath());
         }
+    }
+
+    private SmartImage buildSmartImage(Bitmap bitmap)
+    {
+        return new SmartImage.SmartImageBuilder(bitmap)
+                .setName(getName())
+                .setSoundPath(getSoundPath())
+                .build();
+    }
+
+    /**
+     * Get the Name of the SmartImage
+     * @return The string name of the SmartImage
+     */
+    private String getName()
+    {
+       return null;
+    }
+
+    /**
+     * Record the  sound and store the path for the SmartImage
+     * @return The string sound path for the SmartImage
+     */
+    private String getSoundPath()
+    {
+        return null;
     }
 
 
