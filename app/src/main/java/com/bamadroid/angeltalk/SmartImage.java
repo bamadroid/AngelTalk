@@ -15,12 +15,14 @@ public class SmartImage {
     private String mName;
     private Bitmap mImage;
     private String mSoundPath;
+    private int mDatabaseId;
 
     public static class SmartImageBuilder
     {
         private String bName;
         private Bitmap bImage;
         private String bSoundPath;
+        private int bDatabaseId;
 
         public SmartImageBuilder(Bitmap bitmap)
         {
@@ -39,6 +41,12 @@ public class SmartImage {
             return this;
         }
 
+        public SmartImageBuilder setDatabaseId(int  id)
+        {
+            this.bDatabaseId = id;
+            return this;
+        }
+
         public SmartImage build()
         {
             return new SmartImage(this);
@@ -50,6 +58,7 @@ public class SmartImage {
         this.mName = builder.bName;
         this.mImage = builder.bImage;
         this.mSoundPath = builder.bSoundPath;
+        this.mDatabaseId = builder.bDatabaseId;
     }
 
     public String getName()
@@ -60,6 +69,11 @@ public class SmartImage {
     public String getSoundPath()
     {
         return mSoundPath;
+    }
+
+    public int getDatabaseId()
+    {
+        return mDatabaseId;
     }
 
     public Bitmap getImage()
@@ -74,4 +88,5 @@ public class SmartImage {
         mediaPlayer.create(context, Uri.parse(mSoundPath));
         mediaPlayer.start();
     }
+
 }

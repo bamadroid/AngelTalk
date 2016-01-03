@@ -6,58 +6,52 @@ import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Created by ray on 12/4/2015.
  */
-public class ImageAdapter extends BaseAdapter {
+public class ImageAdapter extends ArrayAdapter<SmartImage>
+{
     private Context mContext;
-    File[] images;
-    File[] files;
+    private int mLayoutResourceId;
+    private ArrayList<SmartImage> mData;
 
-    public ImageAdapter(Context c, int folderID) {
-        mContext = c;
+    private static class ViewHolder
+    {
+       ImageView viewImage;
 
-        File dir = new File(Environment.getExternalStorageDirectory() + "/images");
-        files = dir.listFiles();
-        images = files[folderID].listFiles();
     }
 
-    public int getCount() {
-        return images.length;
+    public ImageAdapter(Context context, int layoutResourceId, ArrayList<SmartImage> data)
+    {
+        super(context, layoutResourceId, data);
+        mContext = context;
+        mLayoutResourceId = layoutResourceId;
+        mData = data;
+
     }
 
-    public Object getItem(int position) {
-
-        return images[position].getAbsolutePath();
-    }
-
-    public long getItemId(int position) {
-        return position;
-    }
-
-    public String getAlbumName(int folderID) {
-        return files[folderID].getName();
-    }
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        ImageView imageView;
-        Bitmap bm = BitmapFactory
-                .decodeFile(images[position].getAbsolutePath());
-        if (convertView == null) {
-            imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(100, 100));
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            imageView.setPadding(5, 10, 5, 10);
-        } else {
-            imageView = (ImageView) convertView;
-        }
-        //imageView.setImageBitmap(bm.decodeFile(images[position].getAbsoluteFile()));
+        ImageView imageView = null;
+//        Bitmap bm = BitmapFactory
+//                .decodeFile(images[position].getAbsolutePath());
+//        if (convertView == null) {
+//            imageView = new ImageView(mContext);
+//            imageView.setLayoutParams(new GridView.LayoutParams(100, 100));
+//            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+//            imageView.setPadding(5, 10, 5, 10);
+//        } else {
+//            imageView = (ImageView) convertView;
+//        }
+//        imageView.setImageBitmap(bm.decodeFile(images[position].getAbsoluteFile()));
         return imageView;
     }
 
