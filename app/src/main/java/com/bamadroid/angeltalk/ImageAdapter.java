@@ -1,17 +1,17 @@
 package com.bamadroid.angeltalk;
 
+import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Environment;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -25,8 +25,9 @@ public class ImageAdapter extends ArrayAdapter<SmartImage>
 
     private static class ViewHolder
     {
-       ImageView viewImage;
-
+        ImageView viewImage;
+        ImageButton imageAddButton;
+        ImageButton imageRemoveButton;
     }
 
     public ImageAdapter(Context context, int layoutResourceId, ArrayList<SmartImage> data)
@@ -39,20 +40,40 @@ public class ImageAdapter extends ArrayAdapter<SmartImage>
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder viewHolder;
+        if (convertView == null)
+        {
+            viewHolder = new ViewHolder();
+            LayoutInflater  inflater = ((Activity) mContext).getLayoutInflater();
+            convertView = inflater.inflate(mLayoutResourceId, parent, false);
 
-        ImageView imageView = null;
-//        Bitmap bm = BitmapFactory
-//                .decodeFile(images[position].getAbsolutePath());
-//        if (convertView == null) {
-//            imageView = new ImageView(mContext);
-//            imageView.setLayoutParams(new GridView.LayoutParams(100, 100));
-//            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-//            imageView.setPadding(5, 10, 5, 10);
-//        } else {
-//            imageView = (ImageView) convertView;
-//        }
-//        imageView.setImageBitmap(bm.decodeFile(images[position].getAbsoluteFile()));
-        return imageView;
+            viewHolder.viewImage = (ImageView) convertView.findViewById(R.id.smartImageView);
+            viewHolder.imageAddButton = (ImageButton) convertView.findViewById(R.id.addButton);
+            viewHolder.imageRemoveButton = (ImageButton) convertView.findViewById(R.id.removeButton);
+
+            convertView.setTag(viewHolder);
+
+        }
+        else
+        {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+
+        SmartImage smartImage = mData.get(position);
+        if (smartImage != null)
+        {
+            viewHolder.viewImage.setImageDrawable(new BitmapDrawable(mContext.getResources(), smartImage.getImage()));
+        }
+        else
+        {
+            viewHolder.viewImage.setImageResource(R.drawable.default_image);
+        }
+       return convertView;
+    }
+
+    public ArrayList getAllItems()
+    {
+        return mData;
     }
 
     // create a new ImageView for each item referenced by the Adapter

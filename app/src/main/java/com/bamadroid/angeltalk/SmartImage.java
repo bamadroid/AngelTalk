@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
 
-import java.io.IOException;
-
 /**
  * Data that will be behind the gridView
  *
@@ -15,14 +13,15 @@ public class SmartImage {
     private String mName;
     private Bitmap mImage;
     private String mSoundPath;
-    private int mDatabaseId;
+    private Integer mDatabaseId;
+
 
     public static class SmartImageBuilder
     {
         private String bName;
         private Bitmap bImage;
         private String bSoundPath;
-        private int bDatabaseId;
+        private Integer bDatabaseId;
 
         public SmartImageBuilder(Bitmap bitmap)
         {
@@ -41,7 +40,7 @@ public class SmartImage {
             return this;
         }
 
-        public SmartImageBuilder setDatabaseId(int  id)
+        public SmartImageBuilder setDatabaseId(Integer  id)
         {
             this.bDatabaseId = id;
             return this;
@@ -71,7 +70,7 @@ public class SmartImage {
         return mSoundPath;
     }
 
-    public int getDatabaseId()
+    public Integer getDatabaseId()
     {
         return mDatabaseId;
     }

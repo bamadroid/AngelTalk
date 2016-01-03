@@ -24,28 +24,5 @@
         android:focusable="true"
         android:clickable="true"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Take Picture"
-        android:id="@+id/picture_button"
-        android:layout_below="@+id/gridView"
-        android:layout_alignStart="@+id/gridView"
-        android:layout_marginStart="38dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Record"
-        android:id="@+id/record_button"
-        android:layout_below="@+id/gridView"
-        android:layout_alignEnd="@+id/gridView"
-        android:layout_marginEnd="29dp" />
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/picture_button2"/>
-
 
 </RelativeLayout>

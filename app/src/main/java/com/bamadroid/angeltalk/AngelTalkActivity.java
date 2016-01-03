@@ -1,5 +1,8 @@
 package com.bamadroid.angeltalk;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -34,6 +37,7 @@ public class AngelTalkActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private SQLiteDatabase mAngleTalkDatabase;
     private DatabaseHelper mDatabaseHelper;
+    private FragmentManager mFragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +45,8 @@ public class AngelTalkActivity extends AppCompatActivity {
         setContentView(R.layout.activity_angel_talk);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mFragmentManager = getFragmentManager();
 
         if (openDatabase())
         {
@@ -51,54 +57,58 @@ public class AngelTalkActivity extends AppCompatActivity {
             Toast.makeText(this.getApplicationContext(),"Database Failed!", Toast.LENGTH_LONG);
         }
 
+        SuperUserFragment superUserFragment = new SuperUserFragment();
+        SwitchUser(superUserFragment, false);
 
-        //TODO: Not used at this time
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Angle Talk", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        Button pictureButton = (Button) findViewById(R.id.picture_button);
+//        pictureButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dispatchTakePictureIntent();
+//            }
+//        });
+//
+//        //TODO: Not used at this time
+//        Button recordButton = (Button) findViewById(R.id.record_button);
+//        recordButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //dispatchRecordIntent();
+//                Cursor cursor = mDatabaseHelper.getAllItems(mAngleTalkDatabase);
+//                if (cursor != null) {
+//                    byte[] bytes = cursor.getBlob(1/*cursor.getColumnIndex(DatabaseConstants.KEY_IMAGE)*/);
+//                    Bitmap bitmap = null;
+//                    bitmap = mDatabaseHelper.dbBitmapUtility.getImage(bytes);
+//
+//                    ImageButton imageButton = (ImageButton) findViewById(R.id.picture_button2);
+//                    BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
+//                    imageButton.setBackgroundDrawable(bitmapDrawable);
+//                }
+//
+//            }
+//        });
+//
+//        //TODO: Not implemented yet
+//        GridView gridview = (GridView) findViewById(R.id.gridView);
+//        //gridview.setAdapter(new ImageAdapter(this, 1));
+//
+//        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+//                Toast.makeText(AngelTalkActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+    }
 
-        Button pictureButton = (Button) findViewById(R.id.picture_button);
-        pictureButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dispatchTakePictureIntent();
-            }
-        });
+    private void SwitchUser(Fragment fragment, boolean password_protected)
+    {
+        if (password_protected)
+        {
+            Toast.makeText(getApplicationContext(),"Password Required!", Toast.LENGTH_LONG);
+        }
 
-        //TODO: Not used at this time
-        Button recordButton = (Button) findViewById(R.id.record_button);
-        recordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //dispatchRecordIntent();
-                Cursor cursor = mDatabaseHelper.getAllItems(mAngleTalkDatabase);
-                if (cursor != null) {
-                    byte[] bytes = cursor.getBlob(1/*cursor.getColumnIndex(DatabaseConstants.KEY_IMAGE)*/);
-                    Bitmap bitmap = null;
-                    bitmap = mDatabaseHelper.dbBitmapUtility.getImage(bytes);
-
-                    ImageButton imageButton = (ImageButton) findViewById(R.id.picture_button2);
-                    BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
-                    imageButton.setBackgroundDrawable(bitmapDrawable);
-                }
-
-            }
-        });
-
-        //TODO: Not implemented yet
-        GridView gridview = (GridView) findViewById(R.id.gridView);
-        //gridview.setAdapter(new ImageAdapter(this, 1));
-
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Toast.makeText(AngelTalkActivity.this, "" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.angel_talk_container, fragment, "USER_FRAGMENT");
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -116,7 +126,9 @@ public class AngelTalkActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_superuser) {
+            SuperUserFragment superUserFragment = new SuperUserFragment();
+            SwitchUser(superUserFragment, true);
             return true;
         }
 

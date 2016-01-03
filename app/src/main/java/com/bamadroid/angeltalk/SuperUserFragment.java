@@ -2,13 +2,16 @@ package com.bamadroid.angeltalk;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -16,11 +19,13 @@ import java.util.ArrayList;
 /**
  * Created by ray on 1/3/2016.
  */
-public class UserFragment extends Fragment{
+public class SuperUserFragment  extends Fragment {
 
     private Context mContext;
     private GridView mGridView;
     private ImageAdapter mImageAdapter;
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,12 +36,13 @@ public class UserFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.angel_talk_container, container,false);
+        View view = inflater.inflate(R.layout.content_angel_talk, container,false);
 
         if (view != null)
         {
-            mContext = mGridView.getContext();
-            mGridView = (GridView) mGridView.findViewById(R.id.gridView);
+            mContext = view.getContext();
+            mGridView = (GridView) view.findViewById(R.id.gridView);
+
             // provides a menu for the grid
             registerForContextMenu(mGridView);
 
@@ -44,22 +50,20 @@ public class UserFragment extends Fragment{
             if (savedInstanceState == null)
             {
                 //TODO: create smart image layout, Nothing fancy but needs to be here for Super user layout
-                mImageAdapter = new ImageAdapter(getActivity(),R.layout.content_angel_talk, new ArrayList<SmartImage>());
+                mImageAdapter = new ImageAdapter(getActivity(),R.layout.smart_image, new ArrayList<SmartImage>());
                 mGridView.setAdapter(mImageAdapter);
                 mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         SmartImage smartImage = (SmartImage) parent.getItemAtPosition(position);
-                        if (smartImage != null && smartImage.getDatabaseId() != null)
-                        {
+                        if (smartImage != null && smartImage.getDatabaseId() != null) {
                             // play sound
-                        }
-                        else
-                        {
-                            Toast.makeText(view.getContext(), "No recording found for Image", Toast.LENGTH_LONG);
+
                         }
                     }
                 });
+
+
             }
         }
 
@@ -74,5 +78,16 @@ public class UserFragment extends Fragment{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    /**
+     * Send Intent that allows user to take a picture.
+     * This Intent expects results (onActivityResult())
+     */
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(mContext.getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
 }
