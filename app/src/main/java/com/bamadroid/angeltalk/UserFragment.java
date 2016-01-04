@@ -31,12 +31,13 @@ public class UserFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.angel_talk_container, container,false);
+        View view = inflater.inflate(R.layout.content_angel_talk, container,false);
 
         if (view != null)
         {
-            mContext = mGridView.getContext();
-            mGridView = (GridView) mGridView.findViewById(R.id.gridView);
+            mContext = view.getContext();
+            mGridView = (GridView) view.findViewById(R.id.gridView);
+
             // provides a menu for the grid
             registerForContextMenu(mGridView);
 
@@ -44,22 +45,20 @@ public class UserFragment extends Fragment{
             if (savedInstanceState == null)
             {
                 //TODO: create smart image layout, Nothing fancy but needs to be here for Super user layout
-                mImageAdapter = new ImageAdapter(getActivity(),R.layout.content_angel_talk, new ArrayList<SmartImage>());
+                mImageAdapter = new ImageAdapter(getActivity(),R.layout.smart_image, new ArrayList<SmartImage>());
                 mGridView.setAdapter(mImageAdapter);
                 mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         SmartImage smartImage = (SmartImage) parent.getItemAtPosition(position);
-                        if (smartImage != null && smartImage.getDatabaseId() != null)
-                        {
+                        if (smartImage != null && smartImage.getDatabaseId() != null) {
                             // play sound
-                        }
-                        else
-                        {
-                            Toast.makeText(view.getContext(), "No recording found for Image", Toast.LENGTH_LONG);
+
                         }
                     }
                 });
+
+
             }
         }
 

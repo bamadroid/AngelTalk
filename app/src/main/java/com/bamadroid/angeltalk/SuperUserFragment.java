@@ -3,6 +3,7 @@ package com.bamadroid.angeltalk;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -50,7 +51,12 @@ public class SuperUserFragment  extends Fragment {
             if (savedInstanceState == null)
             {
                 //TODO: create smart image layout, Nothing fancy but needs to be here for Super user layout
-                mImageAdapter = new ImageAdapter(getActivity(),R.layout.smart_image, new ArrayList<SmartImage>());
+                //mImageAdapter = new ImageAdapter(getActivity(),R.layout.smart_image, new ArrayList<SmartImage>());
+                SmartImage.SmartImageBuilder smartImageBuilder = new SmartImage.SmartImageBuilder(BitmapFactory.decodeResource(getResources(), R.drawable.default_image));
+                SmartImage smartImage = new SmartImage(smartImageBuilder);
+                ArrayList<SmartImage> arrayList = new ArrayList<SmartImage>();
+                arrayList.add(smartImage);
+                mImageAdapter = new ImageAdapter(getActivity(),R.layout.smart_image,arrayList);
                 mGridView.setAdapter(mImageAdapter);
                 mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
