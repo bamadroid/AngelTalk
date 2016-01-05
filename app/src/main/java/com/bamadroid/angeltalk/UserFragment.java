@@ -14,7 +14,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 /**
- * Created by ray on 1/3/2016.
+ * This fragment is a locked down fragment that will require a password to exit.
+ * In this fragment the user is only allowed to view and click SmartImages
+ * All other phone functionality will be locked.
  */
 public class UserFragment extends Fragment{
 

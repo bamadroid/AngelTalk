@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 /**
- * Created by ray on 12/4/2015.
+ * This fragment allows user to add and remove SmartImages
  */
 public class ImageAdapter extends ArrayAdapter<SmartImage>
 {

@@ -63,7 +63,8 @@ public class SuperUserFragment  extends Fragment {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         SmartImage smartImage = (SmartImage) parent.getItemAtPosition(position);
                         if (smartImage != null && smartImage.getDatabaseId() != null) {
-                            // play sound
+                            // Enable buttons
+                            //parent.getAdapter().
 
                         }
                     }
